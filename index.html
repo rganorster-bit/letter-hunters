@@ -1,1 +1,192 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Letter Hunters</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#7b1e1e;
+    color:white;
+    text-align:center;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+h1{
+    font-size:48px;
+    margin-top:20px;
+}
+
+.subtitle{
+    font-size:24px;
+    margin-bottom:20px;
+}
+
+button{
+    font-size:24px;
+    padding:15px 30px;
+    border:none;
+    border-radius:15px;
+    cursor:pointer;
+    margin:15px;
+}
+
+#letters{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:30px;
+}
+
+.letter{
+    width:90px;
+    height:90px;
+    background:white;
+    color:black;
+    border-radius:15px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:48px;
+    font-weight:bold;
+}
+
+#timer{
+    font-size:40px;
+    margin-top:20px;
+    font-weight:bold;
+}
+
+#message{
+    font-size:38px;
+    margin-top:25px;
+    color:#ffe066;
+    font-weight:bold;
+}
+
+@media(max-width:600px){
+
+h1{
+font-size:34px;
+}
+
+.letter{
+width:65px;
+height:65px;
+font-size:34px;
+}
+
+#timer{
+font-size:28px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🔤 Letter Hunters</h1>
+
+<div class="subtitle">
+צרו כמה שיותר מילים בתוך דקה
+</div>
+
+<button onclick="startGame()">
+הגרל אותיות
+</button>
+
+<div id="timer"></div>
+
+<div id="letters"></div>
+
+<div id="message"></div>
+
+</div>
+
+<script>
+
+const vowels = ['א','ה','ו','י'];
+
+const consonants = [
+'ב','ג','ד','ז','ח','ט',
+'כ','ל','מ','נ','ס','ע',
+'פ','צ','ק','ר','ש','ת'
+];
+
+function randomItem(arr){
+return arr[Math.floor(Math.random()*arr.length)];
+}
+
+function startGame(){
+
+document.getElementById("message").innerHTML="";
+
+let letters=[];
+
+letters.push(randomItem(vowels));
+
+while(letters.length<5){
+let letter=randomItem(consonants);
+
+if(!letters.includes(letter)){
+letters.push(letter);
+}
+}
+
+letters.sort(()=>Math.random()-0.5);
+
+const lettersDiv=document.getElementById("letters");
+lettersDiv.innerHTML="";
+
+letters.forEach(letter=>{
+const box=document.createElement("div");
+box.className="letter";
+box.innerHTML=letter;
+lettersDiv.appendChild(box);
+});
+
+let time=60;
+
+document.getElementById("timer").innerHTML=
+"⏱️ 01:00";
+
+const interval=setInterval(()=>{
+
+time--;
+
+let seconds=time.toString().padStart(2,'0');
+
+document.getElementById("timer").innerHTML=
+`⏱️ 00:${seconds}`;
+
+if(time<=0){
+
+clearInterval(interval);
+
+document.getElementById("timer").innerHTML=
+"⏰ הזמן הסתיים!";
+
+document.getElementById("message").innerHTML=
+"כתבתם את כל המילים שמצאתם?";
+}
+
+},1000);
+
+}
+
+</script>
+
+</body>
+</html>
